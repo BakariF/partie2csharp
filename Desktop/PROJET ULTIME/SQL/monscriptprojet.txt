@@ -1,0 +1,169 @@
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+
+#------------------------------------------------------------
+# Table: m4i9k_FranceCard
+#------------------------------------------------------------
+
+CREATE TABLE `m4i9k_regions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+	,CONSTRAINT m4i9k_regions_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
+LOCK TABLES `regions` WRITE;
+/*!40000 ALTER TABLE `regions` DISABLE KEYS */;
+INSERT INTO `regions` VALUES (1,'01','Guadeloupe','guadeloupe'),(2,'02','Martinique','martinique'),(3,'03','Guyane','guyane'),(4,'04','La Réunion','la reunion'),(5,'06','Mayotte','mayotte'),(6,'11','Île-de-France','ile de france'),(7,'24','Centre-Val de Loire','centre val de loire'),(8,'27','Bourgogne-Franche-Comté','bourgogne franche comte'),(9,'28','Normandie','normandie'),(10,'32','Hauts-de-France','hauts de france'),(11,'44','Grand Est','grand est'),(12,'52','Pays de la Loire','pays de la loire'),(13,'53','Bretagne','bretagne'),(14,'75','Nouvelle-Aquitaine','nouvelle aquitaine'),(15,'76','Occitanie','occitanie'),(16,'84','Auvergne-Rhône-Alpes','auvergne rhone alpes'),(17,'93','Provence-Alpes-Côte d\'Azur','provence alpes cote dazur'),(18,'94','Corse','corse'),(19,'COM','Collectivités d\'Outre-Mer','collectivites doutre mer');
+/*!40000 ALTER TABLE `regions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_users
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_users(
+        id                  Int  Auto_increment  NOT NULL ,
+        lastName            Varchar (50) NOT NULL ,
+        firstName           Varchar (50) NOT NULL ,
+        siretNumber         Int ,
+        mail                Varchar (255) NOT NULL ,
+        phoneNumber         Varchar (15) NOT NULL ,
+        id_m4i9k_regions Int NOT NULL
+	,CONSTRAINT m4i9k_users_PK PRIMARY KEY (id)
+
+	,CONSTRAINT m4i9k_users_m4i9k_regions_FK FOREIGN KEY (id_m4i9k_regions) REFERENCES m4i9k_regions(id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_employeeFilter
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_employeeFilter(
+        id               Int  Auto_increment  NOT NULL ,
+        businessSize     Varchar (50) NOT NULL ,
+        activityDomain   Varchar (50) NOT NULL ,
+        SalaryEstimation Int NOT NULL
+	,CONSTRAINT m4i9k_employeeFilter_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_contractorFilter
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_contractorFilter(
+        id           Int  Auto_increment  NOT NULL ,
+        budget       Int NOT NULL ,
+        rentPourcent Int NOT NULL ,
+        employeePost Varchar (50) NOT NULL
+	,CONSTRAINT m4i9k_contractorFilter_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_investorFilter
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_investorFilter(
+        id     Int  Auto_increment  NOT NULL ,
+        rent   Int NOT NULL ,
+        budget Int NOT NULL
+	,CONSTRAINT m4i9k_investorFilter_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_activityDomain
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_activityDomain(
+        id              Int  Auto_increment  NOT NULL ,
+        Sectors         Varchar (15) NOT NULL ,
+        ActivitySectors Varchar (50) NOT NULL
+	,CONSTRAINT m4i9k_activityDomain_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_profiles
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_profiles(
+        id                      Int  Auto_increment  NOT NULL ,
+        picture                 Varchar (1) NOT NULL ,
+        description             Varchar (50) NOT NULL ,
+        propositionTitle        Varchar (50) NOT NULL ,
+        id_m4i9k_activityDomain Int NOT NULL
+	,CONSTRAINT m4i9k_profiles_PK PRIMARY KEY (id)
+
+	,CONSTRAINT m4i9k_profiles_m4i9k_activityDomain_FK FOREIGN KEY (id_m4i9k_activityDomain) REFERENCES m4i9k_activityDomain(id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_contractType
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_contractType(
+        id            Int  Auto_increment  NOT NULL ,
+        contractTypes Varchar (50) NOT NULL
+	,CONSTRAINT m4i9k_contractType_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_FilterPreciseWhichProfilNeeded
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_FilterPreciseWhichProfilNeeded(
+        id                        Int NOT NULL ,
+        id_m4i9k_contractorFilter Int NOT NULL ,
+        id_m4i9k_investorFilter   Int NOT NULL ,
+        id_m4i9k_profiles         Int NOT NULL
+	,CONSTRAINT m4i9k_FilterPreciseWhichProfilNeeded_PK PRIMARY KEY (id,id_m4i9k_contractorFilter,id_m4i9k_investorFilter,id_m4i9k_profiles)
+
+	,CONSTRAINT m4i9k_FilterPreciseWhichProfilNeeded_m4i9k_employeeFilter_FK FOREIGN KEY (id) REFERENCES m4i9k_employeeFilter(id)
+	,CONSTRAINT m4i9k_FilterPreciseWhichProfilNeeded_m4i9k_contractorFilter0_FK FOREIGN KEY (id_m4i9k_contractorFilter) REFERENCES m4i9k_contractorFilter(id)
+	,CONSTRAINT m4i9k_FilterPreciseWhichProfilNeeded_m4i9k_investorFilter1_FK FOREIGN KEY (id_m4i9k_investorFilter) REFERENCES m4i9k_investorFilter(id)
+	,CONSTRAINT m4i9k_FilterPreciseWhichProfilNeeded_m4i9k_profiles2_FK FOREIGN KEY (id_m4i9k_profiles) REFERENCES m4i9k_profiles(id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_userWillUseFiltreForSearch
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_userWillUseFiltreForSearch(
+        id                        Int NOT NULL ,
+        id_m4i9k_investorFilter   Int NOT NULL ,
+        id_m4i9k_contractorFilter Int NOT NULL ,
+        id_m4i9k_users            Int NOT NULL
+	,CONSTRAINT m4i9k_userWillUseFiltreForSearch_PK PRIMARY KEY (id,id_m4i9k_investorFilter,id_m4i9k_contractorFilter,id_m4i9k_users)
+
+	,CONSTRAINT m4i9k_userWillUseFiltreForSearch_m4i9k_employeeFilter_FK FOREIGN KEY (id) REFERENCES m4i9k_employeeFilter(id)
+	,CONSTRAINT m4i9k_userWillUseFiltreForSearch_m4i9k_investorFilter0_FK FOREIGN KEY (id_m4i9k_investorFilter) REFERENCES m4i9k_investorFilter(id)
+	,CONSTRAINT m4i9k_userWillUseFiltreForSearch_m4i9k_contractorFilter1_FK FOREIGN KEY (id_m4i9k_contractorFilter) REFERENCES m4i9k_contractorFilter(id)
+	,CONSTRAINT m4i9k_userWillUseFiltreForSearch_m4i9k_users2_FK FOREIGN KEY (id_m4i9k_users) REFERENCES m4i9k_users(id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: m4i9k_contractTypesForInvestorAndEmployees
+#------------------------------------------------------------
+
+CREATE TABLE m4i9k_contractTypes(
+        id                      Int NOT NULL ,
+        id_m4i9k_employeeFilter Int NOT NULL ,
+        id_m4i9k_investorFilter Int NOT NULL
+	,CONSTRAINT m4i9k_contractTypes_PK PRIMARY KEY (id,id_m4i9k_employeeFilter,id_m4i9k_investorFilter)
+
+	,CONSTRAINT m4i9k_contractTypes_m4i9k_contractType_FK FOREIGN KEY (id) REFERENCES m4i9k_contractType(id)
+	,CONSTRAINT m4i9k_contractTypes_m4i9k_employeeFilter0_FK FOREIGN KEY (id_m4i9k_employeeFilter) REFERENCES m4i9k_employeeFilter(id)
+	,CONSTRAINT m4i9k_contractTypes_m4i9k_investorFilter1_FK FOREIGN KEY (id_m4i9k_investorFilter) REFERENCES m4i9k_investorFilter(id)
+)ENGINE=InnoDB;
+
