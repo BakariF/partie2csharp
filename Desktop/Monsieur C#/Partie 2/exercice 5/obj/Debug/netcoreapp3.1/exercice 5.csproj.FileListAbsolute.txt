@@ -1,0 +1,4 @@
+C:\Users\bakkf\Desktop\Monsieur C#\Partie 2\exercice 5\obj\Debug\netcoreapp3.1\exercice 5.csprojAssemblyReference.cache
+C:\Users\bakkf\Desktop\Monsieur C#\Partie 2\exercice 5\obj\Debug\netcoreapp3.1\exercice 5.AssemblyInfoInputs.cache
+C:\Users\bakkf\Desktop\Monsieur C#\Partie 2\exercice 5\obj\Debug\netcoreapp3.1\exercice 5.AssemblyInfo.cs
+C:\Users\bakkf\Desktop\Monsieur C#\Partie 2\exercice 5\obj\Debug\netcoreapp3.1\exercice 5.csproj.CoreCompileInputs.cache
